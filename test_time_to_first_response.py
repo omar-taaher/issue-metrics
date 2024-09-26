@@ -36,18 +36,18 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         mock_issue1 = MagicMock()
         mock_issue1.comments = 2
         mock_issue1.issue.user.login = "issue_owner"
-        mock_issue1.created_at = "2023-01-01T00:00:00Z"
+        mock_issue1.created_at = "2024-09-26T12:00:00Z"
 
         # Set up the mock GitHub issue comments
         mock_comment1 = MagicMock()
-        mock_comment1.created_at = datetime.fromisoformat("2023-01-02T00:00:00Z")
+        mock_comment1.created_at = datetime.fromisoformat("2024-09-29T10:00:00Z")
         mock_comment2 = MagicMock()
-        mock_comment2.created_at = datetime.fromisoformat("2023-01-02T12:00:00Z")
+        mock_comment2.created_at = datetime.fromisoformat("2024-09-29T11:30:00Z")
         mock_issue1.issue.comments.return_value = [mock_comment1, mock_comment2]
 
         # Call the function
         result = measure_time_to_first_response(mock_issue1, None)
-        expected_result = timedelta(days=1)
+        expected_result = timedelta(hours=7)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -58,7 +58,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         mock_issue1 = MagicMock()
         mock_issue1.comments = 0
         mock_issue1.issue.user.login = "issue_owner"
-        mock_issue1.created_at = "2023-01-01T00:00:00Z"
+        mock_issue1.created_at = "2024-09-26T12:00:00Z"
 
         # Call the function
         result = measure_time_to_first_response(mock_issue1, None)
@@ -74,15 +74,15 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         mock_issue1 = MagicMock()
         mock_issue1.comments = 2
         mock_issue1.issue.user.login = "issue_owner"
-        mock_issue1.created_at = "2023-01-01T00:00:00Z"
+        mock_issue1.created_at = "2024-09-26T11:00:00Z"
 
         # Set up the mock GitHub pull request comments
         mock_pr_comment1 = MagicMock()
         mock_pr_comment1.submitted_at = datetime.fromisoformat(
-            "2023-01-02T00:00:00Z"
+            "2024-09-29T12:00:00Z"
         )  # first response
         mock_pr_comment2 = MagicMock()
-        mock_pr_comment2.submitted_at = datetime.fromisoformat("2023-01-02T12:00:00Z")
+        mock_pr_comment2.submitted_at = datetime.fromisoformat("2024-09-29T17:00:00Z")
         mock_pull_request = MagicMock()
         mock_pull_request.reviews.return_value = [mock_pr_comment1, mock_pr_comment2]
 
@@ -90,7 +90,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, None
         )
-        expected_result = timedelta(days=1)
+        expected_result = timedelta(hours=10)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -121,7 +121,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, None
         )
-        expected_result = timedelta(days=1)
+        expected_result = timedelta(hours=9)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -152,7 +152,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, None
         )
-        expected_result = timedelta(days=1)
+        expected_result = timedelta(hours=9)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -190,7 +190,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, ready_for_review_at
         )
-        expected_result = timedelta(days=1)
+        expected_result = timedelta(hours=9)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -228,7 +228,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, None, ["ignored_user"]
         )
-        expected_result = timedelta(days=3)
+        expected_result = timedelta(hours=27)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -258,7 +258,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, ready_for_review_at
         )
-        expected_result = timedelta(days=1)
+        expected_result = timedelta(hours=9)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -309,24 +309,24 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         mock_issue1 = MagicMock()
         mock_issue1.comments = 4
         mock_issue1.issue.user.login = "issue_owner"
-        mock_issue1.created_at = "2023-01-01T00:00:00Z"
+        mock_issue1.created_at = "2024-09-23T12:00:00Z"
 
         # Set up the mock GitHub issue comments
         mock_comment1 = MagicMock()
         mock_comment1.user.login = "issue_owner"
-        mock_comment1.created_at = datetime.fromisoformat("2023-01-02T00:00:00Z")
+        mock_comment1.created_at = datetime.fromisoformat("2024-09-23T17:00:00Z")
         mock_comment2 = MagicMock()
         mock_comment2.user.login = "other_user"
-        mock_comment2.created_at = datetime.fromisoformat("2023-01-05T00:00:00Z")
+        mock_comment2.created_at = datetime.fromisoformat("2024-09-24T20:00:00Z")
         mock_issue1.issue.comments.return_value = [mock_comment1, mock_comment2]
 
         # Set up the mock GitHub pull request comments
         mock_pr_comment1 = MagicMock()
         mock_pr_comment1.user.login = "issue_owner"
-        mock_pr_comment1.submitted_at = datetime.fromisoformat("2023-01-03T00:00:00Z")
+        mock_pr_comment1.submitted_at = datetime.fromisoformat("2024-09-24T10:00:00Z")
         mock_pr_comment2 = MagicMock()
         mock_pr_comment2.user.login = "other_user"
-        mock_pr_comment2.submitted_at = datetime.fromisoformat("2023-01-04T00:00:00Z")
+        mock_pr_comment2.submitted_at = datetime.fromisoformat("2024-09-24T13:00:00Z")
         mock_pull_request = MagicMock()
         mock_pull_request.reviews.return_value = [mock_pr_comment1, mock_pr_comment2]
 
@@ -334,7 +334,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, None
         )
-        expected_result = timedelta(days=3)
+        expected_result = timedelta(hours=10)
 
         # Check the results
         self.assertEqual(result, expected_result)
@@ -344,22 +344,22 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         # Set up the mock GitHub issues
         mock_issue1 = MagicMock()
         mock_issue1.comments = 2
-        mock_issue1.created_at = "2023-01-01T00:00:00Z"
+        mock_issue1.created_at = "2024-09-25T00:00:00Z"
 
         # Set up the mock GitHub issue comments
         mock_comment1 = MagicMock()
         mock_comment1.user.type = "Bot"
-        mock_comment1.created_at = datetime.fromisoformat("2023-01-02T00:00:00Z")
+        mock_comment1.created_at = datetime.fromisoformat("2024-09-26T10:00:00Z")
         mock_issue1.issue.comments.return_value = [mock_comment1]
 
         # Set up the mock GitHub pull request comments
         mock_pr_comment1 = MagicMock()
         mock_pr_comment1.user.type = "Bot"
-        mock_pr_comment1.submitted_at = datetime.fromisoformat("2023-01-03T00:00:00Z")
+        mock_pr_comment1.submitted_at = datetime.fromisoformat("2024-09-26T15:00:00Z")
         mock_pr_comment2 = MagicMock()
         mock_pr_comment2.user.type = "User"
         mock_pr_comment2.submitted_at = datetime.fromisoformat(
-            "2023-01-04T00:00:00Z"
+            "2024-09-30T13:00:00Z"
         )  # first response
         mock_pull_request = MagicMock()
         mock_pull_request.reviews.return_value = [mock_pr_comment1, mock_pr_comment2]
@@ -368,7 +368,7 @@ class TestMeasureTimeToFirstResponse(unittest.TestCase):
         result = measure_time_to_first_response(
             mock_issue1, None, mock_pull_request, None
         )
-        expected_result = timedelta(days=3)
+        expected_result = timedelta(hours=31)
 
         # Check the results
         self.assertEqual(result, expected_result)

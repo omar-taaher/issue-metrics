@@ -355,7 +355,7 @@ class TestGetPerIssueMetrics(unittest.TestCase):
                 "Issue 1",
                 "https://github.com/user/repo/issues/1",
                 "alice",
-                timedelta(days=1),
+                timedelta(hours=9),
                 None,
                 None,
                 None,
@@ -364,7 +364,7 @@ class TestGetPerIssueMetrics(unittest.TestCase):
                 "Issue 2",
                 "https://github.com/user/repo/issues/2",
                 "bob",
-                timedelta(days=2),
+                timedelta(hours=18),
                 timedelta(days=3),
                 None,
                 None,
@@ -460,7 +460,7 @@ class TestGetPerIssueMetrics(unittest.TestCase):
                 "Issue 2",
                 "https://github.com/user/repo/issues/2",
                 "bob",
-                timedelta(days=2),
+                timedelta(hours=18),
                 timedelta(days=3),
                 None,
                 None,
@@ -544,10 +544,10 @@ class TestDiscussionMetrics(unittest.TestCase):
         # Check that the issues_with_metrics has the correct metrics,
         self.assertEqual(metrics[0][0].time_to_answer, timedelta(days=3))
         self.assertEqual(metrics[0][0].time_to_close, timedelta(days=4))
-        self.assertEqual(metrics[0][0].time_to_first_response, timedelta(days=1))
+        self.assertEqual(metrics[0][0].time_to_first_response, timedelta(hours=9))
         self.assertEqual(metrics[0][1].time_to_answer, timedelta(days=4))
         self.assertEqual(metrics[0][1].time_to_close, timedelta(days=6))
-        self.assertEqual(metrics[0][1].time_to_first_response, timedelta(days=2))
+        self.assertEqual(metrics[0][1].time_to_first_response, timedelta(hours=18))
 
     @patch.dict(
         os.environ,
