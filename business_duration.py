@@ -39,7 +39,7 @@ def business_duration(start: datetime, end: datetime) -> timedelta:
     weekend_days_list = [day.strip() for day in weekend_days.split(',')]
 
     # Define valid days
-    valid_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    valid_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
     # Filter out any invalid day names
     filtered_weekend_days = [day for day in weekend_days_list if day in valid_days]
@@ -76,6 +76,5 @@ def business_duration(start: datetime, end: datetime) -> timedelta:
 
         # Move to the next day
         current += timedelta(days=1)
-        current = current.replace(hour=workday_start, minute=0, second=0, microsecond=0)
-
+        current = current.replace(hour=workday_start, minute=0, second=0, microsecond=0)    
     return total_duration
