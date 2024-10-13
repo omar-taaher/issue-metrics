@@ -22,6 +22,7 @@ from typing import List, Union
 import github3
 import numpy
 from classes import IssueWithMetrics
+from business_duration import business_duration
 
 
 def measure_time_to_close(
@@ -51,7 +52,7 @@ def measure_time_to_close(
         created_at = datetime.fromisoformat(discussion["createdAt"])
 
     if closed_at and created_at:
-        return closed_at - created_at
+        return business_duration(created_at, closed_at)
     return None
 
 

@@ -20,6 +20,7 @@ from typing import List, Union
 
 import numpy
 from classes import IssueWithMetrics
+from business_duration import business_duration
 
 
 def get_stats_time_to_answer(
@@ -82,4 +83,5 @@ def measure_time_to_answer(discussion: dict) -> Union[timedelta, None]:
     answer_time = datetime.fromisoformat(discussion["answerChosenAt"])
     created_time = datetime.fromisoformat(discussion["createdAt"])
 
-    return answer_time - created_time
+    return business_duration(created_time, answer_time)
+

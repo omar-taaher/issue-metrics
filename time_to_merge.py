@@ -14,6 +14,7 @@ Functions:
 
 from datetime import datetime, timedelta
 from typing import Union
+from business_duration import business_duration
 
 import github3
 
@@ -38,7 +39,7 @@ def measure_time_to_merge(
     merged_at = pull_request.merged_at
 
     if ready_for_review_at:
-        return merged_at - ready_for_review_at
+        return business_duration(ready_for_review_at, merged_at)
 
     created_at = pull_request.created_at
-    return merged_at - created_at
+    return business_duration(created_at, merged_at)
