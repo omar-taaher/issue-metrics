@@ -307,11 +307,11 @@ class TestGetPerIssueMetrics(unittest.TestCase):
             user={"login": "alice"},
             state="open",
             comments=1,
-            created_at="2023-01-01T00:00:00Z",
+            created_at="2023-01-03T00:00:00Z",
         )
 
         mock_comment1 = MagicMock()
-        mock_comment1.created_at = datetime.fromisoformat("2023-01-02T00:00:00Z")
+        mock_comment1.created_at = datetime.fromisoformat("2023-01-04T00:00:00Z")
         mock_issue1.issue.comments.return_value = [mock_comment1]
         mock_issue1.issue.pull_request_urls = None
 
@@ -321,12 +321,12 @@ class TestGetPerIssueMetrics(unittest.TestCase):
             user={"login": "bob"},
             state="closed",
             comments=1,
-            created_at="2023-01-01T00:00:00Z",
-            closed_at="2023-01-04T00:00:00Z",
+            created_at="2023-01-03T00:00:00Z",
+            closed_at="2023-01-06T00:00:00Z",
         )
 
         mock_comment2 = MagicMock()
-        mock_comment2.created_at = datetime.fromisoformat("2023-01-03T00:00:00Z")
+        mock_comment2.created_at = datetime.fromisoformat("2023-01-05T00:00:00Z")
         mock_issue2.issue.comments.return_value = [mock_comment2]
         mock_issue2.issue.pull_request_urls = None
 
@@ -365,7 +365,7 @@ class TestGetPerIssueMetrics(unittest.TestCase):
                 "https://github.com/user/repo/issues/2",
                 "bob",
                 timedelta(hours=18),
-                timedelta(days=3),
+                timedelta(hours=27),
                 None,
                 None,
             ),
@@ -460,8 +460,8 @@ class TestGetPerIssueMetrics(unittest.TestCase):
                 "Issue 2",
                 "https://github.com/user/repo/issues/2",
                 "bob",
+                timedelta(hours=9),
                 timedelta(hours=18),
-                timedelta(days=3),
                 None,
                 None,
             ),
@@ -542,12 +542,12 @@ class TestDiscussionMetrics(unittest.TestCase):
         self.assertEqual(len(metrics[0]), 2)
 
         # Check that the issues_with_metrics has the correct metrics,
-        self.assertEqual(metrics[0][0].time_to_answer, timedelta(days=3))
-        self.assertEqual(metrics[0][0].time_to_close, timedelta(days=4))
-        self.assertEqual(metrics[0][0].time_to_first_response, timedelta(hours=9))
-        self.assertEqual(metrics[0][1].time_to_answer, timedelta(days=4))
-        self.assertEqual(metrics[0][1].time_to_close, timedelta(days=6))
-        self.assertEqual(metrics[0][1].time_to_first_response, timedelta(hours=18))
+        self.assertEqual(metrics[0][0].time_to_answer, timedelta(hours=18)) # two working days
+        self.assertEqual(metrics[0][0].time_to_close, timedelta(hours=27)) # three working days
+        self.assertEqual(metrics[0][0].time_to_first_response, timedelta(hours=0)) # same day
+        self.assertEqual(metrics[0][1].time_to_answer, timedelta(hours=27)) # three working days
+        self.assertEqual(metrics[0][1].time_to_close, timedelta(hours=45)) # five working days
+        self.assertEqual(metrics[0][1].time_to_first_response, timedelta(hours=9)) # one working day
 
     @patch.dict(
         os.environ,

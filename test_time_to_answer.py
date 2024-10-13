@@ -114,8 +114,8 @@ class TestMeasureTimeToAnswer(unittest.TestCase):
         """
         # Arrange
         discussion = {
-            "createdAt": "2022-01-01T00:00:00Z",
-            "answerChosenAt": "2022-01-01T00:01:00Z",
+            "createdAt": "2022-01-03T09:00:00Z",
+            "answerChosenAt": "2022-01-03T09:01:00Z",
         }
 
         # Act

@@ -83,7 +83,7 @@ class TestMeasureTimeToClose(unittest.TestCase):
 
         # Call the function and check the result
         result = measure_time_to_close(issue, None)
-        expected_result = timedelta(days=2)
+        expected_result = timedelta(hours=9) # 1 working day
         self.assertEqual(result, expected_result)
 
     def test_measure_time_to_close_returns_none(self):
@@ -106,5 +106,5 @@ class TestMeasureTimeToClose(unittest.TestCase):
 
         # Call the function and check the result
         result = measure_time_to_close(None, issue)
-        expected_result = timedelta(days=2)
+        expected_result = timedelta(hours=9) # 1 working day
         self.assertEqual(result, expected_result)
