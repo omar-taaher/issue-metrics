@@ -2,6 +2,20 @@
 name: "issue-metrics"
 author: "github"
 description: "A GitHub Action to report out issue metrics"
+inputs:
+  weekend_days:
+    description: "Comma separated list of days of the week that are considered weekends (comma-separated list: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)"
+    required: false
+    default: "Saturday,Sunday"
+  working_hours_start:
+    description: "The start of the working day in 24-hour format (0-23)"
+    required: false
+    default: "9"
+  working_hours_end:
+    description: "The end of the working day in 24-hour format (0-23)"
+    required: false
+    default: "17"
+
 runs:
   using: "docker"
   image: "docker://ghcr.io/github/issue_metrics:v3"
